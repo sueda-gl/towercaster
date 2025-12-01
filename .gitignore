@@ -1,0 +1,18 @@
+# API Keys and sensitive configuration
+config.local.js
+
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+.env.local
+
+# OS files
+.DS_Store
+
+.vercel
+
+# API Keys Template (contains real keys - never commit)
+env-template.txt
+env-template.backup

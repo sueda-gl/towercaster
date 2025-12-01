@@ -1,0 +1,38 @@
+{
+  "name": "llm-battle-arena",
+  "version": "2.0.0",
+  "description": "LLM-powered logical battle arena with secure API key management",
+  "main": "index.html",
+  "scripts": {
+    "deploy": "vercel --prod",
+    "preview": "vercel",
+    "logs": "vercel logs",
+    "env:list": "vercel env ls",
+    "env:add": "vercel env add",
+    "setup": "cp env-template.txt .env.local && echo '.env.local created! Add your API keys and run: vercel dev'"
+  },
+  "keywords": [
+    "battle",
+    "game",
+    "three.js",
+    "openai",
+    "azure",
+    "llm",
+    "vercel",
+    "serverless"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@upstash/redis": "^1.28.4",
+    "@upstash/ratelimit": "^1.0.1"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}
+
+
+
+
+

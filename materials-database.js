@@ -1,0 +1,256 @@
+// Materials Database
+// Maps material names to 3D model files for semantic matching
+// rotationOffset: Additional Y-axis rotation in radians to correct model orientation (optional)
+//                 Use this if a model doesn't face the correct direction by default
+//                 Positive = counter-clockwise, Negative = clockwise
+
+const MATERIALS_DATABASE = [
+    // Dinosaurs
+    { name: "T-Rex", file: "models/T-Rex.glb", rotationOffset: 0 },
+    { name: "Tyrannosaurus", file: "models/T-Rex.glb", rotationOffset: 0 },
+    { name: "Velociraptor", file: "models/Velociraptor.glb", rotationOffset: 0 },
+    { name: "Raptor", file: "models/Velociraptor.glb", rotationOffset: 0 },
+    { name: "Triceratops", file: "models/Triceratops.glb", rotationOffset: 0 },
+    { name: "Stegosaurus", file: "models/Stegosaurus.glb", rotationOffset: 0 },
+    { name: "Apatosaurus", file: "models/Apatosaurus.glb", rotationOffset: 0 },
+    { name: "Parasaurolophus", file: "models/Parasaurolophus.glb", rotationOffset: 0 },
+    
+    // Canines/Dogs
+    { name: "Wolf", file: "models/Wolf.glb", rotationOffset: 0 },
+    { name: "German Shepard", file: "models/German Shepard.glb", rotationOffset: 0 },
+    { name: "Husky", file: "models/Husky.glb", rotationOffset: 0 },
+    { name: "Shiba Inu", file: "models/Shiba Inu.glb", rotationOffset: 0 },
+    { name: "Pug", file: "models/Characters Pug.glb", rotationOffset: 0 },
+    { name: "Dog", file: "models/German Shepard.glb", rotationOffset: 0 },
+    
+    // Other Animals
+    { name: "Fox", file: "models/Fox.glb", rotationOffset: 0 },
+    { name: "Cat", file: "models/Cat.glb", rotationOffset: 0 },
+    { name: "Feline", file: "models/Cat.glb", rotationOffset: 0 },
+    
+    // Birds
+    { name: "Chicken", file: "models/Chicken.glb", rotationOffset: 0 },
+    { name: "Hen", file: "models/Chicken.glb", rotationOffset: 0 },
+    { name: "Rooster", file: "models/Chicken.glb", rotationOffset: 0 },
+    { name: "Duck", file: "models/Duck.glb", rotationOffset: 0 },
+    { name: "Mallard", file: "models/Duck.glb", rotationOffset: 0 },
+    { name: "Waterfowl", file: "models/Duck.glb", rotationOffset: 0 },
+    
+    // Marine Life
+    { name: "Shark", file: "models/Shark.glb", rotationOffset: 0 },
+    { name: "Great White", file: "models/Shark.glb", rotationOffset: 0 },
+    { name: "Predator Fish", file: "models/Shark.glb", rotationOffset: 0 },
+    { name: "Seahorse", file: "models/Seahorse.glb", rotationOffset: 0 },
+    { name: "Sea Horse", file: "models/Seahorse.glb", rotationOffset: 0 },
+    { name: "Ocean Creature", file: "models/Seahorse.glb", rotationOffset: 0 },
+    { name: "Ocean", file: "models/Ocean.glb", rotationOffset: 0 },
+    { name: "Sea", file: "models/Ocean.glb", rotationOffset: 0 },
+    { name: "Water", file: "models/Ocean.glb", rotationOffset: 0 },
+    { name: "Waves", file: "models/Ocean.glb", rotationOffset: 0 },
+    
+    // Weapons & Combat
+    { name: "Bomb", file: "models/Bomb.glb", rotationOffset: 0 },
+    { name: "Explosive", file: "models/Bomb.glb", rotationOffset: 0 },
+    { name: "Grenade", file: "models/Bomb.glb", rotationOffset: 0 },
+    { name: "Explosion", file: "models/Bomb.glb", rotationOffset: 0 },
+    { name: "Lightning", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Lightning Bolt", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Thunder", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Electric", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Electricity", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Thunderbolt", file: "models/Lightning bolt.glb", rotationOffset: 0 },
+    { name: "Pistol", file: "models/Pistol.glb", rotationOffset: 0 },
+    { name: "Handgun", file: "models/Pistol.glb", rotationOffset: 0 },
+    { name: "Gun", file: "models/Pistol.glb", rotationOffset: 0 },
+    { name: "Revolver", file: "models/Pistol.glb", rotationOffset: 0 },
+    { name: "Sidearm", file: "models/Pistol.glb", rotationOffset: 0 },
+    { name: "Assault Rifle", file: "models/Assault Rifle.glb", rotationOffset: 0 },
+    { name: "Rifle", file: "models/Assault Rifle.glb", rotationOffset: 0 },
+    { name: "Machine Gun", file: "models/Assault Rifle.glb", rotationOffset: 0 },
+    { name: "Automatic Weapon", file: "models/Assault Rifle.glb", rotationOffset: 0 },
+    { name: "Firearm", file: "models/Assault Rifle.glb", rotationOffset: 0 },
+    
+    // Nature & Environment
+    { name: "Campfire", file: "models/Campfire.glb", rotationOffset: 0 },
+    { name: "Fire", file: "models/Campfire.glb", rotationOffset: 0 },
+    { name: "Flame", file: "models/Campfire.glb", rotationOffset: 0 },
+    { name: "Bonfire", file: "models/Campfire.glb", rotationOffset: 0 },
+    { name: "Torch", file: "models/Torch.glb", rotationOffset: 0 },
+    { name: "Flashlight", file: "models/Torch.glb", rotationOffset: 0 },
+    { name: "Light Source", file: "models/Torch.glb", rotationOffset: 0 },
+    { name: "Lantern", file: "models/Torch.glb", rotationOffset: 0 },
+    { name: "Laser Pointer", file: "models/laser_pointer.glb", rotationOffset: 0 },
+    { name: "Laser", file: "models/laser_pointer.glb", rotationOffset: 0 },
+    { name: "Red Laser", file: "models/laser_pointer.glb", rotationOffset: 0 },
+    { name: "Tree", file: "models/Tree.glb", rotationOffset: 0 },
+    { name: "Single Tree", file: "models/Tree.glb", rotationOffset: 0 },
+    { name: "Trees", file: "models/Trees.glb", rotationOffset: 0 },
+    { name: "Forest", file: "models/Trees.glb", rotationOffset: 0 },
+    { name: "Woods", file: "models/Trees.glb", rotationOffset: 0 },
+    { name: "Volcano", file: "models/Volcano.glb", rotationOffset: 0 },
+    { name: "Lava Mountain", file: "models/Volcano.glb", rotationOffset: 0 },
+    { name: "Eruption", file: "models/Volcano.glb", rotationOffset: 0 },
+    { name: "Magma", file: "models/Volcano.glb", rotationOffset: 0 },
+    { name: "Volcanic", file: "models/Volcano.glb", rotationOffset: 0 },
+    { name: "Snowman", file: "models/Snowman.glb", rotationOffset: 0 },
+    { name: "Snow Man", file: "models/Snowman.glb", rotationOffset: 0 },
+    { name: "Frosty", file: "models/Snowman.glb", rotationOffset: 0 },
+    { name: "Winter Character", file: "models/Snowman.glb", rotationOffset: 0 },
+    { name: "Snowflake", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Snow Flake", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Ice Crystal", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Snow", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Winter", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Frost", file: "models/Snowflake.glb", rotationOffset: 0 },
+    { name: "Crystal", file: "models/Crystal.glb", rotationOffset: 0 },
+    { name: "Gem", file: "models/Crystal.glb", rotationOffset: 0 },
+    { name: "Jewel", file: "models/Crystal.glb", rotationOffset: 0 },
+    { name: "Gemstone", file: "models/Crystal.glb", rotationOffset: 0 },
+    { name: "Diamond", file: "models/Crystal.glb", rotationOffset: 0 },
+    { name: "Precious Stone", file: "models/Crystal.glb", rotationOffset: 0 },
+    
+    // Furniture & Household
+    { name: "Chair", file: "models/Chair.glb", rotationOffset: 0 },
+    { name: "Seat", file: "models/Chair.glb", rotationOffset: 0 },
+    { name: "Couch", file: "models/Couch Medium.glb", rotationOffset: 0 },
+    { name: "Sofa", file: "models/Couch Medium.glb", rotationOffset: 0 },
+    { name: "Couch Medium", file: "models/Couch Medium.glb", rotationOffset: 0 },
+    { name: "Rug", file: "models/Rug.glb", rotationOffset: 0 },
+    { name: "Carpet", file: "models/Rug.glb", rotationOffset: 0 },
+    { name: "Mat", file: "models/Rug.glb", rotationOffset: 0 },
+    { name: "Mirror", file: "models/Mirror.glb", rotationOffset: 0 },
+    { name: "Looking Glass", file: "models/Mirror.glb", rotationOffset: 0 },
+    { name: "Reflection", file: "models/Mirror.glb", rotationOffset: 0 },
+    { name: "Glass", file: "models/Mirror.glb", rotationOffset: 0 },
+    
+    // Kitchen & Food
+    { name: "Meatballs", file: "models/Meatballs.glb", rotationOffset: 0 },
+    { name: "Meatball", file: "models/Meatballs.glb", rotationOffset: 0 },
+    { name: "Food", file: "models/Meatballs.glb", rotationOffset: 0 },
+    { name: "Pan", file: "models/Pan.glb", rotationOffset: 0 },
+    { name: "Frying Pan", file: "models/Pan.glb", rotationOffset: 0 },
+    { name: "Skillet", file: "models/Pan.glb", rotationOffset: 0 },
+    { name: "Cookware", file: "models/Pan.glb", rotationOffset: 0 },
+    { name: "Pizza", file: "models/Supreme Pizza.glb", rotationOffset: 0 },
+    { name: "Supreme Pizza", file: "models/Supreme Pizza.glb", rotationOffset: 0 },
+    { name: "Italian Food", file: "models/Supreme Pizza.glb", rotationOffset: 0 },
+    { name: "Pie", file: "models/Supreme Pizza.glb", rotationOffset: 0 },
+    { name: "Cheese Pizza", file: "models/Supreme Pizza.glb", rotationOffset: 0 },
+    { name: "Salt Shaker", file: "models/Salt Shaker.glb", rotationOffset: 0 },
+    { name: "Salt", file: "models/Salt Shaker.glb", rotationOffset: 0 },
+    { name: "Seasoning", file: "models/Salt Shaker.glb", rotationOffset: 0 },
+    { name: "Condiment", file: "models/Salt Shaker.glb", rotationOffset: 0 },
+    
+    // Clothing & Accessories
+    { name: "Shoes", file: "models/Shoes.glb", rotationOffset: 0 },
+    { name: "Footwear", file: "models/Shoes.glb", rotationOffset: 0 },
+    { name: "Sneakers", file: "models/Shoes.glb", rotationOffset: 0 },
+    { name: "Boots", file: "models/Shoes.glb", rotationOffset: 0 },
+    
+    // Vehicles & Space
+    { name: "Rocket", file: "models/Space rocket.glb", rotationOffset: 0 },
+    { name: "Space Rocket", file: "models/Space rocket.glb", rotationOffset: 0 },
+    { name: "Spaceship", file: "models/Space rocket.glb", rotationOffset: 0 },
+    { name: "Spacecraft", file: "models/Space rocket.glb", rotationOffset: 0 },
+    { name: "Missile", file: "models/Space rocket.glb", rotationOffset: 0 },
+    
+    // Buildings & Structures
+    { name: "Building", file: "models/Large Building.glb", rotationOffset: 0 },
+    { name: "Large Building", file: "models/Large Building.glb", rotationOffset: 0 },
+    { name: "Skyscraper", file: "models/Large Building.glb", rotationOffset: 0 },
+    { name: "Tower", file: "models/Large Building.glb", rotationOffset: 0 },
+    { name: "Structure", file: "models/Large Building.glb", rotationOffset: 0 },
+    { name: "Market Stalls", file: "models/Market Stalls Compact.glb", rotationOffset: 0 },
+    { name: "Market", file: "models/Market Stalls Compact.glb", rotationOffset: 0 },
+    { name: "Marketplace", file: "models/Market Stalls Compact.glb", rotationOffset: 0 },
+    { name: "Scaffold", file: "models/metal scaffold.glb", rotationOffset: 0 },
+    { name: "Metal Scaffold", file: "models/metal scaffold.glb", rotationOffset: 0 },
+    { name: "Scaffolding", file: "models/metal scaffold.glb", rotationOffset: 0 },
+    { name: "Framework", file: "models/metal scaffold.glb", rotationOffset: 0 },
+    { name: "Construction", file: "models/metal scaffold.glb", rotationOffset: 0 },
+    
+    // Terrain & Paths
+    { name: "Rock Path", file: "models/Rock Path Round Small.glb", rotationOffset: 0 },
+    { name: "Stone", file: "models/Rock Path Round Small.glb", rotationOffset: 0 },
+    { name: "Rock", file: "models/Rock Path Round Small.glb", rotationOffset: 0 },
+    { name: "Stone Path", file: "models/Rock Path Round Small.glb", rotationOffset: 0 },
+    { name: "Square Rock Path", file: "models/Rock Path Square Smal.glb", rotationOffset: 0 },
+    { name: "Square Path", file: "models/Rock Path Square Smal.glb", rotationOffset: 0 },
+    { name: "Square Stone", file: "models/Rock Path Square Smal.glb", rotationOffset: 0 },
+    { name: "Cobblestone", file: "models/Rock Path Square Smal.glb", rotationOffset: 0 },
+    { name: "Pavement", file: "models/Rock Path Square Smal.glb", rotationOffset: 0 },
+    
+    // Science & Chemistry
+    { name: "Sodium Ion", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Hydrated Sodium Ion", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Ion", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Molecule", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Atom", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Chemistry", file: "models/hydrated_sodium_ion.glb", rotationOffset: 0 },
+    { name: "Magnet", file: "models/Magnet.glb", rotationOffset: 0 },
+    { name: "Magnetic", file: "models/Magnet.glb", rotationOffset: 0 },
+    { name: "Magnetism", file: "models/Magnet.glb", rotationOffset: 0 },
+    { name: "Attraction", file: "models/Magnet.glb", rotationOffset: 0 },
+    
+    // Industrial & Tools
+    { name: "Gas Can", file: "models/Gas can.glb", rotationOffset: 0 },
+    { name: "Gasoline", file: "models/Gas can.glb", rotationOffset: 0 },
+    { name: "Fuel Can", file: "models/Gas can.glb", rotationOffset: 0 },
+    { name: "Petrol", file: "models/Gas can.glb", rotationOffset: 0 },
+    { name: "Fuel", file: "models/Gas can.glb", rotationOffset: 0 },
+    { name: "Oil Barrels", file: "models/Oil Barrels.glb", rotationOffset: 0 },
+    { name: "Barrels", file: "models/Oil Barrels.glb", rotationOffset: 0 },
+    { name: "Oil Drums", file: "models/Oil Barrels.glb", rotationOffset: 0 },
+    { name: "Drums", file: "models/Oil Barrels.glb", rotationOffset: 0 },
+    { name: "Oil Container", file: "models/Oil Barrels.glb", rotationOffset: 0 },
+    { name: "Lighter", file: "models/Lighter.glb", rotationOffset: 0 },
+    { name: "Fire Starter", file: "models/Lighter.glb", rotationOffset: 0 },
+    { name: "Igniter", file: "models/Lighter.glb", rotationOffset: 0 },
+    { name: "Spark", file: "models/Lighter.glb", rotationOffset: 0 },
+    
+    // Space & Celestial
+    { name: "Sun", file: "models/Sun.glb", rotationOffset: 0 },
+    { name: "Star", file: "models/Sun.glb", rotationOffset: 0 },
+    { name: "Solar", file: "models/Sun.glb", rotationOffset: 0 },
+    { name: "Sunlight", file: "models/Sun.glb", rotationOffset: 0 },
+    { name: "Sunshine", file: "models/Sun.glb", rotationOffset: 0 },
+    { name: "Black Hole", file: "models/Black hole.glb", rotationOffset: 0 },
+    { name: "Black hole", file: "models/Black hole.glb", rotationOffset: 0 },
+    { name: "Singularity", file: "models/Black hole.glb", rotationOffset: 0 },
+    { name: "Void", file: "models/Black hole.glb", rotationOffset: 0 },
+    { name: "Event Horizon", file: "models/Black hole.glb", rotationOffset: 0 },
+    { name: "Space Anomaly", file: "models/Black hole.glb", rotationOffset: 0 },
+    
+    // Human Characters
+    { name: "Adventurer", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Explorer", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Hero", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Warrior", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Fighter", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Knight", file: "models/Adventurer.glb", rotationOffset: 0 },
+    { name: "Man", file: "models/Man.glb", rotationOffset: 0 },
+    { name: "Male", file: "models/Man.glb", rotationOffset: 0 },
+    { name: "Guy", file: "models/Man.glb", rotationOffset: 0 },
+    { name: "Gentleman", file: "models/Man.glb", rotationOffset: 0 },
+    { name: "Human Male", file: "models/Man.glb", rotationOffset: 0 },
+    { name: "Woman", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    { name: "Woman in Dress", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    { name: "Female", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    { name: "Lady", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    { name: "Girl", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    { name: "Human Female", file: "models/Woman in Dress.glb", rotationOffset: 0 },
+    
+    // Technology & Digital
+    { name: "YouTube", file: "models/youtube-logo.glb", rotationOffset: 0 },
+    { name: "Youtube", file: "models/youtube-logo.glb", rotationOffset: 0 },
+    { name: "YouTube Logo", file: "models/youtube-logo.glb", rotationOffset: 0 },
+    { name: "Video Platform", file: "models/youtube-logo.glb", rotationOffset: 0 },
+    { name: "Streaming Service", file: "models/youtube-logo.glb", rotationOffset: 0 },
+    { name: "Video Website", file: "models/youtube-logo.glb", rotationOffset: 0 }
+];
+
+// Export for use in other files
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = MATERIALS_DATABASE;
+}
+
