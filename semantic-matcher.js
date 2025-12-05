@@ -1,10 +1,47 @@
 // Semantic Matcher
-// Uses Azure OpenAI embeddings to match user input to closest material
+// Uses OpenAI embeddings to match user input to closest material
+// OPTIMIZATION: Pre-computed embeddings are loaded from JSON to avoid API calls on first load
 
 class SemanticMatcher {
     constructor() {
         this.embeddingsCache = {};
+        this.precomputedLoaded = false;
+        this.loadPrecomputedEmbeddings();
         this.loadCache();
+    }
+
+    // Load pre-computed embeddings from JSON file (instant, no API calls)
+    loadPrecomputedEmbeddings() {
+        this.precomputedPromise = fetch('precomputed-embeddings.json')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Not found');
+            })
+            .then(precomputed => {
+                // Merge pre-computed embeddings into cache (don't overwrite user-fetched ones)
+                for (const [name, embedding] of Object.entries(precomputed)) {
+                    if (!this.embeddingsCache[name]) {
+                        this.embeddingsCache[name] = embedding;
+                    }
+                }
+                this.precomputedLoaded = true;
+                console.log('✅ Loaded pre-computed embeddings for', Object.keys(precomputed).length, 'materials (instant load!)');
+                return true;
+            })
+            .catch(error => {
+                console.log('ℹ️ Pre-computed embeddings not available, will fetch on-demand');
+                this.precomputedLoaded = true; // Mark as done even if failed
+                return false;
+            });
+    }
+
+    // Wait for pre-computed embeddings to load (call before first match)
+    async waitForPrecomputed() {
+        if (this.precomputedPromise) {
+            await this.precomputedPromise;
+        }
     }
 
     // Load cached embeddings from localStorage
@@ -12,7 +49,9 @@ class SemanticMatcher {
         try {
             const cached = localStorage.getItem('material_embeddings');
             if (cached) {
-                this.embeddingsCache = JSON.parse(cached);
+                const parsedCache = JSON.parse(cached);
+                // Merge with existing (pre-computed embeddings take priority for materials)
+                this.embeddingsCache = { ...parsedCache, ...this.embeddingsCache };
                 console.log('Loaded cached embeddings for', Object.keys(this.embeddingsCache).length, 'materials');
             }
         } catch (error) {
@@ -120,24 +159,107 @@ class SemanticMatcher {
         console.log(`Initialization complete. ${newEmbeddings} new embeddings generated.`);
     }
 
-    // Find best matching material for user input
-    async findBestMatch(userInput) {
-        console.log(`Finding match for: "${userInput}"`);
-
-        // Get embedding for user input
-        const inputEmbedding = await this.getEmbedding(userInput);
-        if (!inputEmbedding) {
-            console.error('Failed to get embedding for user input');
-            return null;
+    // Simple fuzzy string matching (fallback when embeddings not available)
+    fuzzyMatch(input, target) {
+        const inputLower = input.toLowerCase().trim();
+        const targetLower = target.toLowerCase().trim();
+        
+        // Exact match
+        if (inputLower === targetLower) return 1.0;
+        
+        // Contains match
+        if (targetLower.includes(inputLower) || inputLower.includes(targetLower)) {
+            return 0.8;
         }
+        
+        // Word match (any word in input matches target)
+        const inputWords = inputLower.split(/\s+/);
+        const targetWords = targetLower.split(/\s+/);
+        for (const word of inputWords) {
+            if (word.length > 2 && targetWords.some(tw => tw.includes(word) || word.includes(tw))) {
+                return 0.7;
+            }
+        }
+        
+        // Levenshtein-like similarity for short strings
+        if (inputLower.length <= 10 && targetLower.length <= 15) {
+            const maxLen = Math.max(inputLower.length, targetLower.length);
+            let matches = 0;
+            for (let i = 0; i < Math.min(inputLower.length, targetLower.length); i++) {
+                if (inputLower[i] === targetLower[i]) matches++;
+            }
+            const similarity = matches / maxLen;
+            if (similarity > 0.6) return similarity * 0.6;
+        }
+        
+        return 0;
+    }
 
-        // Calculate similarity with all materials
+    // Fast fuzzy matching (no API calls - used when embeddings not available)
+    findBestMatchFuzzy(userInput) {
+        console.log(`[Fuzzy] Finding match for: "${userInput}"`);
+        
         let bestMatch = null;
         let bestScore = 0;
 
         for (const material of MATERIALS_DATABASE) {
-            const materialEmbedding = await this.getEmbedding(material.name);
-            if (!materialEmbedding) continue;
+            const score = this.fuzzyMatch(userInput, material.name);
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = material;
+            }
+        }
+
+        console.log(`[Fuzzy] Best match: "${bestMatch?.name}" with score ${bestScore.toFixed(3)}`);
+
+        if (bestScore >= 0.5) {
+            return {
+                material: bestMatch,
+                score: bestScore
+            };
+        }
+
+        return null;
+    }
+
+    // Find best matching material for user input
+    async findBestMatch(userInput) {
+        console.log(`Finding match for: "${userInput}"`);
+
+        // Wait for pre-computed embeddings to load first
+        await this.waitForPrecomputed();
+
+        // Count how many materials have embeddings cached
+        const cachedCount = MATERIALS_DATABASE.filter(m => this.embeddingsCache[m.name]).length;
+        const totalCount = MATERIALS_DATABASE.length;
+        
+        // If less than 50% of materials have embeddings, use fuzzy matching (instant)
+        if (cachedCount < totalCount * 0.5) {
+            console.log(`⚡ Using fuzzy matching (only ${cachedCount}/${totalCount} embeddings cached)`);
+            return this.findBestMatchFuzzy(userInput);
+        }
+
+        // Get embedding for user input
+        const inputEmbedding = await this.getEmbedding(userInput);
+        if (!inputEmbedding) {
+            console.warn('Failed to get embedding for user input, falling back to fuzzy matching');
+            return this.findBestMatchFuzzy(userInput);
+        }
+
+        // Calculate similarity with all materials
+        // Pre-computed embeddings should already be in cache - this is now instant!
+        let bestMatch = null;
+        let bestScore = 0;
+        let missingCount = 0;
+
+        for (const material of MATERIALS_DATABASE) {
+            // Check cache first (should hit for pre-computed materials)
+            const materialEmbedding = this.embeddingsCache[material.name];
+            
+            if (!materialEmbedding) {
+                missingCount++;
+                continue;
+            }
 
             const similarity = this.cosineSimilarity(inputEmbedding, materialEmbedding);
 
@@ -145,6 +267,11 @@ class SemanticMatcher {
                 bestScore = similarity;
                 bestMatch = material;
             }
+        }
+
+        // Log if we're missing embeddings (shouldn't happen with pre-computed file)
+        if (missingCount > 0) {
+            console.warn(`⚠️ Missing embeddings for ${missingCount} materials. Run: node generate-embeddings.js`);
         }
 
         console.log(`Best match: "${bestMatch?.name}" with score ${bestScore.toFixed(3)}`);
@@ -157,7 +284,9 @@ class SemanticMatcher {
             };
         }
 
-        return null;
+        // Fallback to fuzzy if semantic matching found nothing good
+        console.log('Semantic match too weak, trying fuzzy...');
+        return this.findBestMatchFuzzy(userInput);
     }
 }
 
