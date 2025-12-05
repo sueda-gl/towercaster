@@ -213,7 +213,7 @@ function addTrailParticle(projectile) {
     }
 }
 
-// Animate character walking on ground to center (Supercell style)
+// Animate character walking on ground to center
 function animateAttack(visual, fromTeam, toTeam) {
     return new Promise((resolve) => {
         // Find starting tower position
@@ -530,7 +530,7 @@ function showWinnerAnimation(char1, char2, winner, duration) {
     });
 }
 
-// Create DRAMATIC collision effect when characters clash (Supercell style)
+// Create DRAMATIC collision effect when characters clash
 async function createCenterCollision(visual1, visual2, winner) {
     const centerPos = new THREE.Vector3(0, 0, 0); // Ground level
     
